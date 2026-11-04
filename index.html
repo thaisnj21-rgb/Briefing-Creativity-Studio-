@@ -2,63 +2,738 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#F5EFE6" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#F6F1EA" />
   <meta name="description" content="Calculadora de orçamentos do Creativity Studio — calcule entrada, saldo e gere o resumo do orçamento." />
   <title>Calculadora Creativity Studio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+/* ==========================================================
+   Calculadora Creativity Studio — estilos
+   Paleta: creme, bege e marrom · direção editorial e leve
+   ========================================================== */
+
+:root {
+  --fundo: #f6f1ea;
+  --papel: #fdfbf7;
+  --creme: #f1e9dd;
+  --bege: #e6dacb;
+  --bege-forte: #d2bfa6;
+  --caramelo: #a87b51;
+  --marrom: #6e4c35;
+  --cafe: #33241a;
+  --texto: #33241a;
+  --texto-suave: #8c7765;
+  --erro: #a3412f;
+
+  --raio: 22px;
+  --raio-sm: 14px;
+  --sombra: 0 1px 1px rgba(51, 36, 26, 0.03), 0 20px 40px -24px rgba(51, 36, 26, 0.18);
+
+  --serif: "Fraunces", Georgia, "Times New Roman", serif;
+  --sans: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--texto);
+  background: var(--fundo);
+  -webkit-font-smoothing: antialiased;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.oculto {
+  display: none !important;
+}
+
+/* ---------- Topo ---------- */
+.topo {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 40px 20px 28px;
+  text-align: center;
+}
+
+.marca {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.monograma {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--caramelo);
+  border-radius: 50%;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--marrom);
+}
+
+.marca-nome {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--marrom);
+}
+
+.topo h1 {
+  margin: 22px 0 10px;
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(2.1rem, 7vw, 3.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--cafe);
+}
+
+.topo h1 em {
+  font-style: italic;
+  color: var(--caramelo);
+}
+
+.subtitulo {
+  margin: 0 auto;
+  max-width: 420px;
+  font-size: 0.95rem;
+  color: var(--texto-suave);
+}
+
+/* ---------- Layout ---------- */
+.layout {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 0 16px 32px;
+  display: grid;
+  gap: 16px;
+}
+
+@media (min-width: 880px) {
+  .layout {
+    grid-template-columns: 1.15fr 1fr;
+    gap: 24px;
+    align-items: start;
+    padding-bottom: 48px;
+  }
+  .painel-recibo {
+    position: sticky;
+    top: 24px;
+  }
+}
+
+.painel {
+  background: var(--papel);
+  border: 1px solid var(--bege);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+  padding: 26px 20px;
+}
+
+@media (min-width: 600px) {
+  .painel {
+    padding: 36px;
+  }
+}
+
+.painel-titulo {
+  margin: 0 0 26px;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 1.6rem;
+  letter-spacing: -0.01em;
+  color: var(--cafe);
+}
+
+/* ---------- Campos ---------- */
+.campo {
+  margin: 0 0 24px;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.rotulo {
+  display: block;
+  margin: 0 0 10px;
+  padding: 0;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+
+input[type="text"] {
+  width: 100%;
+  height: 54px;
+  padding: 0 18px;
+  font: inherit;
+  font-size: 1rem; /* evita zoom automático no iOS */
+  color: var(--texto);
+  background: #fff;
+  border: 1px solid var(--bege);
+  border-radius: var(--raio-sm);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input[type="text"]::placeholder {
+  color: #bfae9b;
+}
+
+input[type="text"]:focus {
+  border-color: var(--caramelo);
+  box-shadow: 0 0 0 4px rgba(168, 123, 81, 0.14);
+}
+
+.invalido input[type="text"] {
+  border-color: var(--erro);
+}
+
+#servico-outro {
+  margin-top: 12px;
+}
+
+.erro {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.8rem;
+  color: var(--erro);
+}
+
+.erro:empty {
+  display: none;
+}
+
+/* Valor */
+.input-moeda {
+  position: relative;
+}
+
+.input-moeda span {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  color: var(--caramelo);
+  pointer-events: none;
+}
+
+.input-moeda input[type="text"] {
+  height: 64px;
+  padding-left: 54px;
+  font-family: var(--serif);
+  font-size: 1.6rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* Chips de serviço */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  position: relative;
+  cursor: pointer;
+}
+
+.chip input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.chip span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 0 16px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--marrom);
+  background: #fff;
+  border: 1px solid var(--bege);
+  border-radius: 999px;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+  user-select: none;
+}
+
+.chip:hover span {
+  border-color: var(--bege-forte);
+}
+
+.chip input:checked + span {
+  color: var(--papel);
+  background: var(--cafe);
+  border-color: var(--cafe);
+}
+
+.chip input:focus-visible + span {
+  outline: 2px solid var(--caramelo);
+  outline-offset: 2px;
+}
+
+.chip-outro span {
+  border-style: dashed;
+  color: var(--texto-suave);
+}
+
+/* ---------- Botões ---------- */
+.acoes {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.btn {
+  min-height: 52px;
+  padding: 0 26px;
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.1s;
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--caramelo);
+  outline-offset: 3px;
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn-primario {
+  flex: 1;
+  color: var(--papel);
+  background: var(--cafe);
+}
+
+.btn-primario:hover:not(:disabled) {
+  background: var(--marrom);
+}
+
+.btn-texto {
+  color: var(--texto-suave);
+  background: transparent;
+  padding: 0 18px;
+}
+
+.btn-texto:hover {
+  color: var(--cafe);
+}
+
+.btn-contorno {
+  flex: 1;
+  color: var(--cafe);
+  background: transparent;
+  border-color: var(--bege-forte);
+}
+
+.btn-contorno:hover:not(:disabled) {
+  background: var(--creme);
+}
+
+/* ---------- Recibo ---------- */
+.painel-recibo {
+  background: var(--creme);
+  border-color: var(--bege);
+}
+
+.recibo {
+  padding: 24px 20px;
+  background: var(--papel);
+  border-radius: var(--raio-sm);
+  border: 1px solid var(--bege);
+}
+
+@media (min-width: 600px) {
+  .recibo {
+    padding: 30px 28px;
+  }
+}
+
+.recibo-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--bege);
+}
+
+.recibo-marca {
+  margin: 0;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--caramelo);
+}
+
+.recibo-titulo {
+  margin: 4px 0 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 1.7rem;
+  letter-spacing: -0.01em;
+  color: var(--cafe);
+}
+
+.recibo-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  font-size: 0.75rem;
+  color: var(--texto-suave);
+  text-align: right;
+}
+
+.selo {
+  margin-bottom: 4px;
+  padding: 4px 10px;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+  border: 1px solid var(--bege);
+  border-radius: 999px;
+}
+
+.selo.pronto {
+  color: #fff;
+  background: var(--caramelo);
+  border-color: var(--caramelo);
+}
+
+.recibo-dados {
+  margin: 0;
+}
+
+.recibo-dados > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px dashed var(--bege);
+}
+
+.recibo-dados dt {
+  flex-shrink: 0;
+  font-size: 0.85rem;
+  color: var(--texto-suave);
+}
+
+.recibo-dados dd {
+  margin: 0;
+  font-weight: 600;
+  text-align: right;
+  word-break: break-word;
+}
+
+.recibo-dados dd.vazio {
+  color: var(--bege-forte);
+  font-weight: 400;
+}
+
+.recibo-total {
+  padding: 22px 0 14px;
+}
+
+.recibo-total .rotulo {
+  margin-bottom: 4px;
+}
+
+.recibo-total strong {
+  display: block;
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(2.4rem, 10vw, 3.1rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--cafe);
+  word-break: break-word;
+}
+
+.divisao {
+  display: flex;
+  gap: 4px;
+  height: 6px;
+  margin-bottom: 18px;
+}
+
+.divisao span {
+  flex: 1;
+  border-radius: 999px;
+  background: var(--caramelo);
+}
+
+.divisao span + span {
+  background: var(--bege-forte);
+}
+
+.parcelas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.parcela {
+  min-width: 0;
+  padding: 14px;
+  background: var(--fundo);
+  border-radius: 12px;
+}
+
+.parcela .rotulo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+  font-size: 0.64rem;
+  letter-spacing: 0.12em;
+}
+
+.ponto {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.ponto-1 {
+  background: var(--caramelo);
+}
+
+.ponto-2 {
+  background: var(--bege-forte);
+}
+
+.parcela strong {
+  display: block;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.2rem, 5vw, 1.45rem);
+  color: var(--cafe);
+  word-break: break-word;
+}
+
+.parcela small {
+  font-size: 0.74rem;
+  color: var(--texto-suave);
+}
+
+.recibo-nota {
+  margin: 18px 0 0;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--texto-suave);
+}
+
+.acoes-recibo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.acoes-recibo .btn-primario {
+  flex: none;
+}
+
+.acoes-linha {
+  display: flex;
+  gap: 8px;
+}
+
+.dica {
+  margin: 6px 0 0;
+  font-size: 0.8rem;
+  text-align: center;
+  color: var(--texto-suave);
+}
+
+.dica strong {
+  color: var(--marrom);
+}
+
+.recibo.destaque {
+  animation: destaque 0.6s ease-out;
+}
+
+@keyframes destaque {
+  0% {
+    box-shadow: 0 0 0 0 rgba(168, 123, 81, 0.45);
+  }
+  100% {
+    box-shadow: 0 0 0 14px rgba(168, 123, 81, 0);
+  }
+}
+
+@media (max-width: 360px) {
+  .parcelas {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Rodapé e toast ---------- */
+.rodape {
+  padding: 0 20px 36px;
+  text-align: center;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(24px + env(safe-area-inset-bottom));
+  max-width: calc(100% - 32px);
+  padding: 12px 22px;
+  font-size: 0.9rem;
+  text-align: center;
+  color: var(--papel);
+  background: var(--cafe);
+  border-radius: 999px;
+  box-shadow: var(--sombra);
+  opacity: 0;
+  transform: translate(-50%, 16px);
+  transition: opacity 0.25s, transform 0.25s;
+  pointer-events: none;
+}
+
+.toast.visivel {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ---------- Impressão: só o recibo ---------- */
+@media print {
+  body {
+    background: #fff;
+  }
+  .topo,
+  .rodape,
+  .toast,
+  .painel-form,
+  .acoes-recibo,
+  .selo {
+    display: none !important;
+  }
+  .layout {
+    display: block;
+    padding: 0;
+  }
+  .painel-recibo {
+    position: static;
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+    background: #fff;
+  }
+  .recibo {
+    border: 0;
+  }
+  .parcela,
+  .divisao span {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+</style>
 </head>
 <body>
   <header class="topo">
-    <p class="marca">Creativity Studio</p>
+    <div class="marca">
+      <span class="monograma" aria-hidden="true">CS</span>
+      <span class="marca-nome">Creativity Studio</span>
+    </div>
     <h1>Calculadora <em>de orçamento</em></h1>
-    <p class="subtitulo">Preencha os dados do projeto para calcular a entrada, o saldo e gerar o resumo.</p>
+    <p class="subtitulo">Monte o orçamento do seu cliente em segundos — entrada, saldo e resumo prontos para enviar.</p>
   </header>
 
   <main class="layout">
-    <!-- Formulário -->
-    <section class="cartao" aria-labelledby="titulo-dados">
-      <h2 id="titulo-dados" class="cartao-titulo"><span class="numero">01</span> Dados do orçamento</h2>
+    <!-- ============ FORMULÁRIO ============ -->
+    <section class="painel painel-form" aria-labelledby="titulo-form">
+      <h2 id="titulo-form" class="painel-titulo">Novo orçamento</h2>
 
       <form id="form-orcamento" novalidate>
         <div class="campo">
-          <label for="cliente">Nome do cliente</label>
-          <input type="text" id="cliente" name="cliente" placeholder="Ex.: Ana Souza" autocomplete="name" required />
+          <label for="cliente" class="rotulo">Cliente</label>
+          <input type="text" id="cliente" name="cliente" placeholder="Nome do cliente" autocomplete="name" required />
           <small class="erro" data-erro="cliente"></small>
         </div>
 
-        <div class="campo">
-          <label for="servico">Serviço de design</label>
-          <div class="select-wrap">
-            <select id="servico" name="servico" required>
-              <option value="" disabled selected>Selecione um serviço</option>
-              <option>Identidade Visual Completa</option>
-              <option>Criação de Logotipo</option>
-              <option>Rebranding</option>
-              <option>Social Media (pacote mensal)</option>
-              <option>Posts para Instagram</option>
-              <option>Design de Embalagem</option>
-              <option>Papelaria Personalizada</option>
-              <option>Apresentação / Pitch Deck</option>
-              <option>Landing Page / Web Design</option>
-              <option>Convite Digital</option>
-              <option value="__outro">Outro serviço…</option>
-            </select>
+        <fieldset class="campo">
+          <legend class="rotulo">Serviço de design</legend>
+          <div class="chips" id="chips">
+            <label class="chip"><input type="radio" name="servico" value="Identidade Visual" /><span>Identidade Visual</span></label>
+            <label class="chip"><input type="radio" name="servico" value="Logotipo" /><span>Logotipo</span></label>
+            <label class="chip"><input type="radio" name="servico" value="Rebranding" /><span>Rebranding</span></label>
+            <label class="chip"><input type="radio" name="servico" value="Social Media" /><span>Social Media</span></label>
+            <label class="chip"><input type="radio" name="servico" value="Posts para Instagram" /><span>Posts Instagram</span></label>
+            <label class="chip"><input type="radio" name="servico" value="Embalagem" /><span>Embalagem</span></label>
+            <label class="chip"><input type="radio" name="servico" value="Papelaria" /><span>Papelaria</span></label>
+            <label class="chip"><input type="radio" name="servico" value="Apresentação" /><span>Apresentação</span></label>
+            <label class="chip"><input type="radio" name="servico" value="Web Design" /><span>Web Design</span></label>
+            <label class="chip"><input type="radio" name="servico" value="Convite Digital" /><span>Convite Digital</span></label>
+            <label class="chip chip-outro"><input type="radio" name="servico" value="__outro" /><span>+ Outro</span></label>
           </div>
+          <input type="text" id="servico-outro" class="oculto" placeholder="Descreva o serviço" aria-label="Descreva o serviço" />
           <small class="erro" data-erro="servico"></small>
-        </div>
-
-        <div class="campo oculto" id="campo-outro">
-          <label for="servico-outro">Descreva o serviço</label>
-          <input type="text" id="servico-outro" name="servico-outro" placeholder="Ex.: Ilustração editorial" />
-          <small class="erro" data-erro="servico-outro"></small>
-        </div>
+        </fieldset>
 
         <div class="campo">
-          <label for="preco">Preço do serviço</label>
+          <label for="preco" class="rotulo">Valor do serviço</label>
           <div class="input-moeda">
             <span aria-hidden="true">R$</span>
             <input type="text" id="preco" name="preco" inputmode="numeric" placeholder="0,00" autocomplete="off" required />
@@ -68,79 +743,310 @@
 
         <div class="acoes">
           <button type="submit" class="btn btn-primario">Gerar resumo</button>
-          <button type="reset" class="btn btn-secundario">Limpar</button>
+          <button type="reset" class="btn btn-texto">Limpar</button>
         </div>
       </form>
     </section>
 
-    <!-- Valores -->
-    <section class="cartao cartao-valores" aria-labelledby="titulo-valores" aria-live="polite">
-      <h2 id="titulo-valores" class="cartao-titulo"><span class="numero">02</span> Valores</h2>
-
-      <div class="total">
-        <span class="rotulo">Valor total do orçamento</span>
-        <strong id="valor-total">R$ 0,00</strong>
-      </div>
-
-      <div class="parcelas">
-        <div class="parcela">
-          <span class="rotulo">Entrada · 50%</span>
-          <strong id="valor-entrada">R$ 0,00</strong>
-          <small>Na aprovação do orçamento</small>
-        </div>
-        <div class="parcela">
-          <span class="rotulo">Saldo · 50%</span>
-          <strong id="valor-saldo">R$ 0,00</strong>
-          <small>Na entrega final</small>
-        </div>
-      </div>
-
-      <div class="barra" aria-hidden="true"><span></span><span></span></div>
-    </section>
-
-    <!-- Resumo -->
-    <section class="cartao cartao-resumo oculto" id="resumo" aria-labelledby="titulo-resumo">
-      <h2 id="titulo-resumo" class="cartao-titulo"><span class="numero">03</span> Resumo do orçamento</h2>
-
+    <!-- ============ RECIBO / RESUMO ============ -->
+    <aside class="painel painel-recibo" aria-labelledby="titulo-recibo" aria-live="polite">
       <article class="recibo" id="recibo">
         <header class="recibo-topo">
           <div>
-            <p class="marca">Creativity Studio</p>
-            <p class="recibo-tipo">Orçamento</p>
+            <p class="recibo-marca">Creativity Studio</p>
+            <h2 id="titulo-recibo" class="recibo-titulo">Orçamento</h2>
           </div>
           <div class="recibo-meta">
+            <span class="selo" id="selo">Prévia</span>
             <span id="resumo-numero"></span>
             <span id="resumo-data"></span>
           </div>
         </header>
 
-        <dl class="recibo-linhas">
-          <div><dt>Cliente</dt><dd id="resumo-cliente"></dd></div>
-          <div><dt>Serviço</dt><dd id="resumo-servico"></dd></div>
-          <div><dt>Entrada (50%)</dt><dd id="resumo-entrada"></dd></div>
-          <div><dt>Saldo restante (50%)</dt><dd id="resumo-saldo"></dd></div>
+        <dl class="recibo-dados">
+          <div><dt>Cliente</dt><dd id="resumo-cliente" class="vazio">—</dd></div>
+          <div><dt>Serviço</dt><dd id="resumo-servico" class="vazio">—</dd></div>
         </dl>
 
         <div class="recibo-total">
-          <span>Total</span>
-          <strong id="resumo-total"></strong>
+          <span class="rotulo">Valor total</span>
+          <strong id="valor-total">R$ 0,00</strong>
         </div>
 
-        <p class="recibo-nota">A entrada de 50% confirma a reserva do projeto. O saldo de 50% é pago na entrega dos arquivos finais. Orçamento válido por 15 dias.</p>
+        <div class="divisao" aria-hidden="true"><span></span><span></span></div>
+
+        <div class="parcelas">
+          <div class="parcela">
+            <span class="rotulo"><i class="ponto ponto-1"></i>Entrada 50%</span>
+            <strong id="valor-entrada">R$ 0,00</strong>
+            <small>Na aprovação</small>
+          </div>
+          <div class="parcela">
+            <span class="rotulo"><i class="ponto ponto-2"></i>Saldo 50%</span>
+            <strong id="valor-saldo">R$ 0,00</strong>
+            <small>Na entrega final</small>
+          </div>
+        </div>
+
+        <p class="recibo-nota">A entrada confirma a reserva do projeto; o saldo é pago na entrega dos arquivos finais. Orçamento válido por 15 dias.</p>
       </article>
 
-      <div class="acoes acoes-resumo">
-        <button type="button" class="btn btn-primario" id="btn-copiar">Copiar resumo</button>
-        <button type="button" class="btn btn-secundario" id="btn-whatsapp">Enviar no WhatsApp</button>
-        <button type="button" class="btn btn-secundario" id="btn-imprimir">Imprimir / PDF</button>
+      <div class="acoes-recibo" id="acoes-recibo">
+        <button type="button" class="btn btn-primario" id="btn-copiar" disabled>Copiar resumo</button>
+        <div class="acoes-linha">
+          <button type="button" class="btn btn-contorno" id="btn-whatsapp" disabled>WhatsApp</button>
+          <button type="button" class="btn btn-contorno" id="btn-imprimir" disabled>Salvar PDF</button>
+        </div>
+        <p class="dica" id="dica">Preencha os dados e toque em <strong>Gerar resumo</strong>.</p>
       </div>
-    </section>
+    </aside>
   </main>
 
-  <footer class="rodape">© <span id="ano"></span> Creativity Studio</footer>
+  <footer class="rodape">Creativity Studio · <span id="ano"></span></footer>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="app.js"></script>
+  <script>
+/* ==========================================================
+   Calculadora Creativity Studio — lógica
+   ========================================================== */
+(function () {
+  "use strict";
+
+  var $ = function (sel) { return document.querySelector(sel); };
+
+  var form = $("#form-orcamento");
+  var inCliente = $("#cliente");
+  var inOutro = $("#servico-outro");
+  var inPreco = $("#preco");
+  var recibo = $("#recibo");
+  var selo = $("#selo");
+  var dica = $("#dica");
+  var toast = $("#toast");
+  var botoesAcao = ["#btn-copiar", "#btn-whatsapp", "#btn-imprimir"].map($);
+
+  var brl = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+  function fmt(centavos) { return brl.format(centavos / 100); }
+
+  $("#ano").textContent = new Date().getFullYear();
+
+  /* ---------- Leitura dos campos ---------- */
+  function lerCentavos() {
+    var d = inPreco.value.replace(/\D/g, "");
+    return d ? parseInt(d, 10) : 0;
+  }
+
+  function servicoMarcado() {
+    return form.querySelector('input[name="servico"]:checked');
+  }
+
+  function nomeServico() {
+    var r = servicoMarcado();
+    if (!r) return "";
+    return r.value === "__outro" ? inOutro.value.trim() : r.value;
+  }
+
+  /* ---------- Cálculo ----------
+     Entrada = metade arredondada para cima; saldo = o restante.
+     Assim entrada + saldo sempre fecham exatamente o total. */
+  function calcular(total) {
+    var entrada = Math.ceil(total / 2);
+    return { total: total, entrada: entrada, saldo: total - entrada };
+  }
+
+  /* ---------- Atualização ao vivo do recibo ---------- */
+  function preencher(id, valor) {
+    var el = $(id);
+    el.textContent = valor || "—";
+    el.classList.toggle("vazio", !valor);
+  }
+
+  function atualizar() {
+    var v = calcular(lerCentavos());
+    $("#valor-total").textContent = fmt(v.total);
+    $("#valor-entrada").textContent = fmt(v.entrada);
+    $("#valor-saldo").textContent = fmt(v.saldo);
+    preencher("#resumo-cliente", inCliente.value.trim());
+    preencher("#resumo-servico", nomeServico());
+    if (ultimo) desfinalizar(); // dados mudaram: volta a ser prévia
+    return v;
+  }
+
+  /* ---------- Máscara de moeda ---------- */
+  inPreco.addEventListener("input", function () {
+    var d = inPreco.value.replace(/\D/g, "").replace(/^0+/, "").slice(0, 11);
+    inPreco.value = d
+      ? (parseInt(d, 10) / 100).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+      : "";
+    limparErro("preco");
+    atualizar();
+  });
+
+  inCliente.addEventListener("input", function () { limparErro("cliente"); atualizar(); });
+  inOutro.addEventListener("input", function () { limparErro("servico"); atualizar(); });
+
+  form.addEventListener("change", function (e) {
+    if (e.target.name !== "servico") return;
+    var outro = e.target.value === "__outro";
+    inOutro.classList.toggle("oculto", !outro);
+    if (outro) inOutro.focus();
+    limparErro("servico");
+    atualizar();
+  });
+
+  /* ---------- Validação ---------- */
+  function campoDe(nome) {
+    var el = document.querySelector('[data-erro="' + nome + '"]');
+    return { msg: el, campo: el.closest(".campo") };
+  }
+  function definirErro(nome, texto) {
+    var c = campoDe(nome);
+    c.msg.textContent = texto;
+    c.campo.classList.add("invalido");
+  }
+  function limparErro(nome) {
+    var c = campoDe(nome);
+    c.msg.textContent = "";
+    c.campo.classList.remove("invalido");
+  }
+
+  function validar() {
+    var primeiro = null;
+    function marcar(nome, el, texto) {
+      definirErro(nome, texto);
+      if (!primeiro) primeiro = el;
+    }
+    ["cliente", "servico", "preco"].forEach(limparErro);
+
+    if (!inCliente.value.trim()) marcar("cliente", inCliente, "Informe o nome do cliente.");
+    var r = servicoMarcado();
+    if (!r) marcar("servico", form.querySelector('input[name="servico"]'), "Escolha um serviço.");
+    else if (r.value === "__outro" && !inOutro.value.trim()) marcar("servico", inOutro, "Descreva o serviço.");
+    if (lerCentavos() <= 0) marcar("preco", inPreco, "Informe um valor maior que zero.");
+
+    if (primeiro) primeiro.focus();
+    return !primeiro;
+  }
+
+  /* ---------- Gerar resumo ---------- */
+  var ultimo = null;
+
+  function gerarNumero(d) {
+    function p(n) { return String(n).padStart(2, "0"); }
+    return "Nº " + d.getFullYear() + p(d.getMonth() + 1) + p(d.getDate()) + "-" + p(d.getHours()) + p(d.getMinutes());
+  }
+
+  function finalizar(o) {
+    $("#resumo-numero").textContent = o.numero;
+    $("#resumo-data").textContent = o.data;
+    selo.textContent = "Pronto";
+    selo.classList.add("pronto");
+    botoesAcao.forEach(function (b) { b.disabled = false; });
+    dica.classList.add("oculto");
+  }
+
+  function desfinalizar() {
+    ultimo = null;
+    $("#resumo-numero").textContent = "";
+    $("#resumo-data").textContent = "";
+    selo.textContent = "Prévia";
+    selo.classList.remove("pronto");
+    botoesAcao.forEach(function (b) { b.disabled = true; });
+    dica.classList.remove("oculto");
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (!validar()) return;
+    var v = atualizar();
+    var agora = new Date();
+    ultimo = {
+      numero: gerarNumero(agora),
+      data: agora.toLocaleDateString("pt-BR"),
+      cliente: inCliente.value.trim(),
+      servico: nomeServico(),
+      total: v.total,
+      entrada: v.entrada,
+      saldo: v.saldo
+    };
+    finalizar(ultimo);
+
+    recibo.classList.remove("destaque");
+    void recibo.offsetWidth; // reinicia a animação
+    recibo.classList.add("destaque");
+    if (window.innerWidth < 880) recibo.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
+  form.addEventListener("reset", function () {
+    setTimeout(function () {
+      inOutro.classList.add("oculto");
+      ["cliente", "servico", "preco"].forEach(limparErro);
+      desfinalizar();
+      atualizar();
+      inCliente.focus();
+    }, 0);
+  });
+
+  /* ---------- Ações ---------- */
+  function textoResumo(o) {
+    return [
+      "*Creativity Studio — Orçamento*",
+      o.numero + " · " + o.data,
+      "",
+      "Cliente: " + o.cliente,
+      "Serviço: " + o.servico,
+      "",
+      "Valor total: " + fmt(o.total),
+      "Entrada (50%): " + fmt(o.entrada) + " — na aprovação",
+      "Saldo (50%): " + fmt(o.saldo) + " — na entrega final",
+      "",
+      "Orçamento válido por 15 dias."
+    ].join("\n");
+  }
+
+  function mostrarToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add("visivel");
+    clearTimeout(mostrarToast.t);
+    mostrarToast.t = setTimeout(function () { toast.classList.remove("visivel"); }, 2200);
+  }
+
+  function copiarFallback(texto) {
+    var ta = document.createElement("textarea");
+    ta.value = texto;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+    ta.remove();
+    return ok;
+  }
+
+  $("#btn-copiar").addEventListener("click", function () {
+    if (!ultimo) return;
+    var texto = textoResumo(ultimo);
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(texto).then(
+        function () { mostrarToast("Resumo copiado ✓"); },
+        function () { mostrarToast(copiarFallback(texto) ? "Resumo copiado ✓" : "Não foi possível copiar"); }
+      );
+    } else {
+      mostrarToast(copiarFallback(texto) ? "Resumo copiado ✓" : "Não foi possível copiar");
+    }
+  });
+
+  $("#btn-whatsapp").addEventListener("click", function () {
+    if (!ultimo) return;
+    window.open("https://wa.me/?text=" + encodeURIComponent(textoResumo(ultimo)), "_blank", "noopener");
+  });
+
+  $("#btn-imprimir").addEventListener("click", function () { window.print(); });
+
+  atualizar();
+})();
+</script>
 </body>
 </html>

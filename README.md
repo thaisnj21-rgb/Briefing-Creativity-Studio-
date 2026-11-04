@@ -5,10 +5,10 @@ Ferramenta web para montar orçamentos de serviços de design: cadastra o client
 ## Funcionalidades
 
 - Cadastro do nome do cliente
-- Seleção do serviço de design (com opção "Outro serviço…" para descrever livremente)
+- Seleção do serviço de design em botões (com opção "+ Outro" para descrever livremente)
 - Campo de preço com formatação automática em reais (R$)
 - Cálculo em tempo real de entrada (50%), saldo (50%) e total
-- Resumo do orçamento com número e data
+- Resumo do orçamento atualizado ao vivo, com número e data ao gerar
 - Botões para **copiar o resumo**, **enviar pelo WhatsApp** e **imprimir / salvar em PDF**
 - Layout responsivo, pensado para celular
 - Paleta em creme, bege e marrom
@@ -17,13 +17,9 @@ Ferramenta web para montar orçamentos de serviços de design: cadastra o client
 
 ## Estrutura
 
-```
-index.html   → estrutura da página
-styles.css   → visual (cores, tipografia, responsividade, impressão)
-app.js       → cálculos, validação e geração do resumo
-```
-
-Não há dependências nem etapa de build: é HTML, CSS e JavaScript puros.
+Todo o aplicativo está em **um único arquivo: `index.html`** (visual e cálculos incluídos).
+Você pode enviá-lo por WhatsApp, e-mail ou pendrive e ele abre sozinho em qualquer navegador.
+Não há dependências nem etapa de build.
 
 ## Como visualizar
 
