@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#F5EFE6" />
+  <meta name="description" content="Calculadora de orçamentos do Creativity Studio — calcule entrada, saldo e gere o resumo do orçamento." />
+  <title>Calculadora Creativity Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topo">
+    <p class="marca">Creativity Studio</p>
+    <h1>Calculadora <em>de orçamento</em></h1>
+    <p class="subtitulo">Preencha os dados do projeto para calcular a entrada, o saldo e gerar o resumo.</p>
+  </header>
+
+  <main class="layout">
+    <!-- Formulário -->
+    <section class="cartao" aria-labelledby="titulo-dados">
+      <h2 id="titulo-dados" class="cartao-titulo"><span class="numero">01</span> Dados do orçamento</h2>
+
+      <form id="form-orcamento" novalidate>
+        <div class="campo">
+          <label for="cliente">Nome do cliente</label>
+          <input type="text" id="cliente" name="cliente" placeholder="Ex.: Ana Souza" autocomplete="name" required />
+          <small class="erro" data-erro="cliente"></small>
+        </div>
+
+        <div class="campo">
+          <label for="servico">Serviço de design</label>
+          <div class="select-wrap">
+            <select id="servico" name="servico" required>
+              <option value="" disabled selected>Selecione um serviço</option>
+              <option>Identidade Visual Completa</option>
+              <option>Criação de Logotipo</option>
+              <option>Rebranding</option>
+              <option>Social Media (pacote mensal)</option>
+              <option>Posts para Instagram</option>
+              <option>Design de Embalagem</option>
+              <option>Papelaria Personalizada</option>
+              <option>Apresentação / Pitch Deck</option>
+              <option>Landing Page / Web Design</option>
+              <option>Convite Digital</option>
+              <option value="__outro">Outro serviço…</option>
+            </select>
+          </div>
+          <small class="erro" data-erro="servico"></small>
+        </div>
+
+        <div class="campo oculto" id="campo-outro">
+          <label for="servico-outro">Descreva o serviço</label>
+          <input type="text" id="servico-outro" name="servico-outro" placeholder="Ex.: Ilustração editorial" />
+          <small class="erro" data-erro="servico-outro"></small>
+        </div>
+
+        <div class="campo">
+          <label for="preco">Preço do serviço</label>
+          <div class="input-moeda">
+            <span aria-hidden="true">R$</span>
+            <input type="text" id="preco" name="preco" inputmode="numeric" placeholder="0,00" autocomplete="off" required />
+          </div>
+          <small class="erro" data-erro="preco"></small>
+        </div>
+
+        <div class="acoes">
+          <button type="submit" class="btn btn-primario">Gerar resumo</button>
+          <button type="reset" class="btn btn-secundario">Limpar</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Valores -->
+    <section class="cartao cartao-valores" aria-labelledby="titulo-valores" aria-live="polite">
+      <h2 id="titulo-valores" class="cartao-titulo"><span class="numero">02</span> Valores</h2>
+
+      <div class="total">
+        <span class="rotulo">Valor total do orçamento</span>
+        <strong id="valor-total">R$ 0,00</strong>
+      </div>
+
+      <div class="parcelas">
+        <div class="parcela">
+          <span class="rotulo">Entrada · 50%</span>
+          <strong id="valor-entrada">R$ 0,00</strong>
+          <small>Na aprovação do orçamento</small>
+        </div>
+        <div class="parcela">
+          <span class="rotulo">Saldo · 50%</span>
+          <strong id="valor-saldo">R$ 0,00</strong>
+          <small>Na entrega final</small>
+        </div>
+      </div>
+
+      <div class="barra" aria-hidden="true"><span></span><span></span></div>
+    </section>
+
+    <!-- Resumo -->
+    <section class="cartao cartao-resumo oculto" id="resumo" aria-labelledby="titulo-resumo">
+      <h2 id="titulo-resumo" class="cartao-titulo"><span class="numero">03</span> Resumo do orçamento</h2>
+
+      <article class="recibo" id="recibo">
+        <header class="recibo-topo">
+          <div>
+            <p class="marca">Creativity Studio</p>
+            <p class="recibo-tipo">Orçamento</p>
+          </div>
+          <div class="recibo-meta">
+            <span id="resumo-numero"></span>
+            <span id="resumo-data"></span>
+          </div>
+        </header>
+
+        <dl class="recibo-linhas">
+          <div><dt>Cliente</dt><dd id="resumo-cliente"></dd></div>
+          <div><dt>Serviço</dt><dd id="resumo-servico"></dd></div>
+          <div><dt>Entrada (50%)</dt><dd id="resumo-entrada"></dd></div>
+          <div><dt>Saldo restante (50%)</dt><dd id="resumo-saldo"></dd></div>
+        </dl>
+
+        <div class="recibo-total">
+          <span>Total</span>
+          <strong id="resumo-total"></strong>
+        </div>
+
+        <p class="recibo-nota">A entrada de 50% confirma a reserva do projeto. O saldo de 50% é pago na entrega dos arquivos finais. Orçamento válido por 15 dias.</p>
+      </article>
+
+      <div class="acoes acoes-resumo">
+        <button type="button" class="btn btn-primario" id="btn-copiar">Copiar resumo</button>
+        <button type="button" class="btn btn-secundario" id="btn-whatsapp">Enviar no WhatsApp</button>
+        <button type="button" class="btn btn-secundario" id="btn-imprimir">Imprimir / PDF</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="rodape">© <span id="ano"></span> Creativity Studio</footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
