@@ -5,13 +5,14 @@ Ferramenta web para montar orçamentos de serviços de design: cadastra o client
 ## Funcionalidades
 
 - Cadastro do nome do cliente
-- Seleção do serviço de design em botões (com opção "+ Outro" para descrever livremente)
+- Seleção dos pacotes da Creativity (Essencial, Profissional, Premium, Personalizado, Naming), com o preço preenchido automaticamente, ou "Outro serviço" com valor livre
 - Campo de preço com formatação automática em reais (R$)
 - Cálculo em tempo real de entrada (50%), saldo (50%) e total
 - Resumo do orçamento atualizado ao vivo, com número e data ao gerar
 - Botões para **copiar o resumo**, **enviar pelo WhatsApp** e **imprimir / salvar em PDF**
 - Layout responsivo, pensado para celular
-- Paleta em creme, bege e marrom
+- Identidade visual da Creativity · Studio de Designers: logo, símbolo, terracota, oliva, nude e creme, fonte Montserrat
+- Folha do orçamento no mesmo padrão do PDF da marca, com condições de pagamento, prazo e contatos
 
 > Em valores ímpares em centavos, a entrada é arredondada para cima e o saldo fica com o restante, para que a soma feche exatamente o total.
 
