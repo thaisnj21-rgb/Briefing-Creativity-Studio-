@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Creativity Studio · Gestão de Clientes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <span class="brand-mark">CS</span>
+        <div>
+          <strong>Creativity Studio</strong>
+          <small>Gestão de Clientes</small>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="#/dashboard" data-route="dashboard">Painel</a>
+        <a href="#/clientes" data-route="clientes">Clientes</a>
+        <a href="#/projetos" data-route="projetos">Projetos</a>
+        <a href="#/dados" data-route="dados">Backup &amp; Dados</a>
+      </nav>
+      <p class="sidebar-foot">Os dados ficam salvos neste navegador.</p>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <button class="icon-btn menu-btn" id="menuBtn" aria-label="Abrir menu">☰</button>
+        <h1 id="pageTitle">Painel</h1>
+        <button class="btn btn-primary" id="newClientBtn">+ Novo cliente</button>
+      </header>
+      <main id="view" class="view" tabindex="-1"></main>
+    </div>
+  </div>
+
+  <!-- Modal genérico -->
+  <div class="modal-backdrop" id="modal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <header class="modal-head">
+        <h2 id="modalTitle"></h2>
+        <button class="icon-btn" data-close aria-label="Fechar">✕</button>
+      </header>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/store.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
