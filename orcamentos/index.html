@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Orçamentos Creativity</title>
+<meta name="description" content="Gerador de orçamentos da Creativity · Studio de Designers. Crie, salve e baixe orçamentos em PDF.">
+<meta name="theme-color" content="#A54F35">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Orçamentos">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="wrap">
+<header>
+ <div><div class="eb">Creativity · Studio de Designers</div><h1>Gerador de <span>Orçamentos</span></h1></div>
+ <div class="hd-r">
+  <nav class="tabs" role="tablist" aria-label="Seções">
+   <button type="button" role="tab" id="tab-novo" aria-selected="true" aria-controls="view-novo">Orçamento</button>
+   <button type="button" role="tab" id="tab-lista" aria-selected="false" aria-controls="view-lista">Meus orçamentos <span class="cnt" id="cnt">0</span></button>
+  </nav>
+  <button type="button" class="btn sm" id="instalar" hidden>Instalar app</button>
+ </div>
+</header>
+
+<p class="ios" id="ios" hidden>Para instalar no iPhone: toque em <b>Compartilhar</b> e depois em <b>Adicionar à Tela de Início</b>.</p>
+
+<section id="view-novo" role="tabpanel" aria-labelledby="tab-novo">
+<div class="layout">
+<form id="f" autocomplete="off">
+ <fieldset><legend>Cliente</legend>
+  <label for="cli">Nome da cliente<input type="text" id="cli" placeholder="Ex.: Maria Fernanda Souza"></label>
+  <label for="mar">Nome da marca (opcional)<input type="text" id="mar" placeholder="Ex.: Doces da Nanda"></label>
+  <div class="row">
+   <label for="dt">Data<input type="date" id="dt"></label>
+   <label for="num">Nº do orçamento<input type="text" id="num"></label>
+  </div>
+ </fieldset>
+ <fieldset><legend>Pacote escolhido</legend>
+  <div class="pk" id="pk" role="group" aria-label="Pacote"></div>
+  <label for="preco">Valor do pacote (R$)<input type="number" id="preco" min="0" step="10" inputmode="decimal"></label>
+  <label for="itens" id="litens">Itens inclusos (um por linha)<textarea id="itens"></textarea></label>
+  <label for="bonus" id="lbonus">Bônus (um por linha)<textarea id="bonus" style="min-height:64px"></textarea></label>
+  <label class="chk" for="naming"><input type="checkbox" id="naming">Incluir Naming (até 10 opções de nomes) + R$ 100,00</label>
+  <label class="chk" for="urg"><input type="checkbox" id="urg">Prazo com urgência (7 a 10 dias úteis) + R$ 50,00</label>
+  <label for="desc">Desconto (R$)<input type="number" id="desc" min="0" step="5" value="0" inputmode="decimal"></label>
+ </fieldset>
+ <fieldset><legend>Pagamento</legend>
+  <label for="pag">Forma de pagamento<select id="pag"><option value="pix">PIX</option><option value="cartao">Cartão de crédito</option><option value="ambos">PIX ou cartão de crédito</option></select></label>
+  <label for="obs">Observação na folha (opcional)<input type="text" id="obs" placeholder="Ex.: Inclui arte extra para embalagem"></label>
+ </fieldset>
+ <div class="act">
+  <button type="button" class="btn p" id="pdf">Baixar PDF</button>
+  <button type="button" class="btn" id="share" hidden>Compartilhar PDF</button>
+  <button type="button" class="btn" id="salvar">Salvar</button>
+  <button type="button" class="btn" id="wpp">Copiar mensagem do WhatsApp</button>
+  <button type="button" class="btn ghost" id="novo">Novo orçamento</button>
+ </div>
+ <p id="msg" role="status"></p>
+</form>
+
+<div class="side">
+ <div class="stage" id="stage"><div class="scaler" id="scaler">
+  <div class="page" id="page">
+   <div class="band"></div>
+   <img class="wm" src="assets/simbolo.png" alt="">
+   <svg class="waves" viewBox="0 0 420 300" fill="none" stroke="#D9C39F" stroke-width="1">
+    <path d="M0 40 C120 60 220 140 300 300"/><path d="M0 70 C110 90 200 160 270 300"/><path d="M0 100 C100 120 180 180 240 300"/><path d="M0 130 C90 150 160 200 210 300"/><path d="M0 160 C80 180 140 220 180 300"/><path d="M0 190 C70 210 120 240 150 300"/><path d="M0 220 C60 240 100 260 120 300"/>
+   </svg>
+   <div class="in">
+    <div class="ph"><img src="assets/logo.png" alt="Creativity Studio de Designers"><div class="meta"><b>ORÇAMENTO</b><span id="p_num"></span><br><span id="p_dt"></span></div></div>
+    <div class="ttl"><h2>Orçamento</h2><p id="p_sub">Identidade Visual</p></div>
+    <div class="cli"><div><span>Cliente</span><strong id="p_cli"></strong></div><div id="p_marw"><span>Marca</span><strong id="p_mar"></strong></div></div>
+    <div class="pkg"><h3 id="p_pk"></h3><p class="ds" id="p_ds"></p>
+     <div class="cols"><div><h4>Incluso</h4><ul id="p_i1"></ul></div><div><h4 style="visibility:hidden">Incluso</h4><ul id="p_i2"></ul><div id="p_bw" style="margin-top:12px"><h4>Bônus</h4><ul id="p_b"></ul></div></div></div>
+    </div>
+    <div class="vals" id="p_vals"></div>
+    <div class="cond">
+     <div><h4>Condições de pagamento</h4><p id="p_pag"></p></div>
+     <div><h4>Prazo e ajustes</h4><p id="p_prazo"></p></div>
+    </div>
+    <p class="obs" id="p_obs"></p>
+    <div class="et" id="p_et"><h4>Etapas do projeto</h4><ol><li><b>1</b>Briefing da marca</li><li><b>2</b>Desenvolvimento da identidade visual</li><li><b>3</b>Apresentação do projeto</li><li><b>4</b>Ajustes finais</li><li><b>5</b>Entrega dos arquivos via Google Drive</li></ol></div>
+   </div>
+   <div class="pf">
+    <div class="sig"><img src="assets/assinatura.png" alt=""><div><b>Thaís Nascimento</b><span>Founder &amp; Brand Designer</span></div></div>
+    <div class="ct">WhatsApp 75 98244-7993<br>@_creativitystudioo<br><span class="q">Criando marcas que conectam, encantam e permanecem.</span></div>
+   </div>
+  </div>
+ </div></div>
+ <p class="hint">Prévia da folha A4 que vai no PDF.</p>
+</div>
+</div>
+</section>
+
+<section id="view-lista" role="tabpanel" aria-labelledby="tab-lista" hidden>
+ <div class="lst-hd">
+  <label for="busca" class="grow">Buscar<input type="search" id="busca" placeholder="Cliente, marca, pacote ou nº"></label>
+  <div class="act">
+   <button type="button" class="btn sm" id="exportar">Exportar backup</button>
+   <label class="btn sm file">Importar backup<input type="file" id="importar" accept="application/json,.json"></label>
+  </div>
+ </div>
+ <p class="hint">Os orçamentos ficam salvos neste aparelho. Use “Exportar backup” para guardar uma cópia ou levar para outro aparelho.</p>
+ <p id="msg2" role="status"></p>
+ <ul class="lst" id="lst"></ul>
+ <p class="vazio" id="vazio">Nenhum orçamento salvo ainda. Crie um na aba <b>Orçamento</b> e toque em <b>Salvar</b> ou <b>Baixar PDF</b>.</p>
+</section>
+</div>
+
+<script src="vendor/html2canvas.min.js" defer></script>
+<script src="vendor/jspdf.umd.min.js" defer></script>
+<script src="app.js" defer></script>
+</body>
+</html>

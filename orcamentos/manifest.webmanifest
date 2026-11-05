@@ -1,0 +1,21 @@
+{
+  "name": "Orçamentos Creativity",
+  "short_name": "Orçamentos",
+  "description": "Crie, salve e baixe os orçamentos da Creativity · Studio de Designers em PDF.",
+  "lang": "pt-BR",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#E6DDC4",
+  "theme_color": "#A54F35",
+  "icons": [
+    { "src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Meus orçamentos", "url": "./#meus", "icons": [{ "src": "assets/icon-192.png", "sizes": "192x192" }] }
+  ]
+}
