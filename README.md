@@ -1,40 +1,28 @@
-# Calculadora Creativity Studio
+# Orçamentos Creativity Studio
 
-Ferramenta web para montar orçamentos de serviços de design: cadastra o cliente, escolhe o serviço, informa o preço e calcula automaticamente a **entrada de 50%**, o **saldo restante de 50%** e o **valor total**, gerando um resumo pronto para enviar.
+Programa de orçamentos da **Creativity · Studio de Designers**: monte o orçamento, veja a folha A4 ao vivo no padrão da marca, **baixe em PDF** e mantenha todos os orçamentos **salvos** para reabrir depois.
 
 ## Funcionalidades
 
-- Cadastro do nome do cliente
-- Seleção dos pacotes da Creativity (Essencial, Profissional, Premium, Personalizado, Naming), com o preço preenchido automaticamente, ou "Outro serviço" com valor livre
-- Campo de preço com formatação automática em reais (R$)
-- Cálculo em tempo real de entrada (50%), saldo (50%) e total
-- Resumo do orçamento atualizado ao vivo, com número e data ao gerar
-- Botões para **copiar o resumo**, **enviar pelo WhatsApp** e **imprimir / salvar em PDF**
-- Layout responsivo, pensado para celular
-- Identidade visual da Creativity · Studio de Designers: logo, símbolo, terracota, oliva, nude e creme, fonte Montserrat
-- Folha do orçamento no mesmo padrão do PDF da marca, com condições de pagamento, prazo e contatos
+- **Cliente:** nome da cliente, marca (opcional), data e nº do orçamento (gerado automaticamente, ex.: `261105-01`)
+- **Serviço:** pacotes Essencial, Profissional, Premium, Personalizado e Naming, que preenchem preço, descrição, itens e bônus. Tudo continua editável. Há também "Outro serviço" com valor livre.
+- **Adicionais:** Naming (+ R$ 100), urgência (+ R$ 50) e desconto
+- **Cálculo automático:** total, entrada de 50% e saldo de 50%. A entrada é arredondada para cima nos centavos, para a soma fechar exatamente o total.
+- **Folha A4 ao vivo:** logo, cores, condições de pagamento, prazo, etapas do projeto e rodapé com contatos
+- **Salvar e baixar PDF:** gera um arquivo `.pdf` em A4, como `Orcamento-Creativity-Maria-Souza-261105-01.pdf`
+- **Orçamentos salvos:** lista com busca, para abrir e editar, baixar o PDF de novo ou excluir
+- **Copiar mensagem do WhatsApp:** texto pronto para enviar junto com o PDF
+- Responsivo, funciona no celular
 
-> Em valores ímpares em centavos, a entrada é arredondada para cima e o saldo fica com o restante, para que a soma feche exatamente o total.
+## Como usar
 
-## Estrutura
+Tudo está em **um único arquivo: `index.html`**. Basta abrir no navegador, sem instalar nada.
 
-Todo o aplicativo está em **um único arquivo: `index.html`** (visual e cálculos incluídos).
-Você pode enviá-lo por WhatsApp, e-mail ou pendrive e ele abre sozinho em qualquer navegador.
-Não há dependências nem etapa de build.
+1. Baixe o projeto: no GitHub, escolha a branch e clique em *Code → Download ZIP*. Extraia e dê dois cliques em `index.html`.
+2. Preencha o orçamento e toque em **Salvar e baixar PDF**.
 
-## Como visualizar
+### Bom saber
 
-**Opção 1 — abrir direto no navegador**
-Baixe o projeto (botão *Code → Download ZIP* no GitHub), extraia e dê dois cliques em `index.html`.
-
-**Opção 2 — servidor local** (recomendado para testar a cópia para a área de transferência)
-```bash
-python3 -m http.server 8000
-```
-Depois acesse `http://localhost:8000`.
-Para testar no celular, conecte-o à mesma rede Wi-Fi e acesse `http://IP-DO-COMPUTADOR:8000`.
-
-**Opção 3 — publicar online com GitHub Pages**
-1. No repositório, vá em *Settings → Pages*.
-2. Em *Source*, escolha *Deploy from a branch*, selecione a branch (ex.: `main`) e a pasta `/ (root)`.
-3. Salve. Em alguns minutos o app estará em `https://<seu-usuario>.github.io/<nome-do-repositorio>/`, acessível de qualquer celular.
+- **Internet:** o PDF usa duas bibliotecas carregadas da internet. Sem conexão, o programa abre a janela de impressão; escolha **"Salvar como PDF"** que o resultado é o mesmo.
+- **Onde os orçamentos ficam salvos:** no próprio navegador do aparelho. Use sempre o mesmo navegador e o mesmo arquivo (ou link), e não limpe os dados de navegação, senão a lista se perde. Guarde os PDFs baixados como cópia.
+- **Publicar online (opcional):** em *Settings → Pages*, publique a branch na pasta `/ (root)` para abrir por um link no celular.
